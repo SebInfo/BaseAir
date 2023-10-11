@@ -1,5 +1,4 @@
 <?php
-
 // Classe qui va gérer la manipulation des objets Pilotes et faire le lien avec la BDD
 class PiloteManager implements iterator 
 {
@@ -31,7 +30,7 @@ class PiloteManager implements iterator
 
 	public function next()
 	{
-		++$this->_pos;
+		$this->_pos++;
 	}
 
 	public function rewind()
@@ -98,12 +97,26 @@ class PiloteManager implements iterator
 	{
 		// Retourne tous les pilotes 
 		$pilotes = [];
-		$q = $this->_db->query('SELECT NumP, NameP, Address, Salary FROM PILOT ORDER BY NameP');
-		while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
+		try
 		{
-			$pilotes[] = new Pilote($donnees);
+			$q = $this->_db->query('SELECT NumP, NameP, Address, Salary FROM PILOT ORDER BY NameP');
+			if (!$q)
+			{
+				throw new Exception("La liste est vide !",12);
+			}
+			while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
+			{
+				$pilotes[] = new Pilote($donnees);
+			}
+			return $pilotes; // On retourne un tableau d'objets Pilote
 		}
-		return $pilotes; // On retourne un tableau d'objets Pilote
+		catch(Exception $e)
+		{
+			echo $e->getMessage()."<br>";
+			echo "Erreur numéro ".$e->getCode()."<br>";
+			echo "Fichier ".$e->getFile()."<br>";
+			echo "Ligne".$e->getLine()."<br>";
+		}
 	}
 
 	// On fixe la BDD

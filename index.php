@@ -41,6 +41,7 @@
 			$manager->add($nouveauPilote);
 		}
 
+
 		/* Cas du bouton afficher un pilote depuis son numéro */
 		if (isset($_POST['unPilote']) && $_POST['codePilote'] != 0)
 		{
@@ -55,7 +56,7 @@
 			$nbrDecallage = $_POST['nbr'];
 			$i=0;
 			// on decalle du nombre de pas necessaire
-			while ($i<=$nbrDecallage AND $manager->valid($manager->current()))
+			while ($i<$nbrDecallage AND $manager->valid($manager->current()))
 			{ 
 				$manager->next();
 				$i++;
@@ -98,7 +99,7 @@
 				<li>
 					<label>Nombre de pas</label>
 					<input type="number" name="nbr">
-					<input type="submit" name="next"  value="Suivant">
+					<input type="submit" name="next"  value="Suivant après l'indice">
 					<input type="submit" name="rewind"  value="Debut">
 				</li>
 			</ol>
